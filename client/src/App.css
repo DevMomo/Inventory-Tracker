@@ -11,16 +11,38 @@
   margin-top: 15 px;
 }
 
-.information input{
+.information input {
   width: 200px;
   margin: 5px;
 }
 
-.information button{
+button {
   margin: 5px;
 }
 
-.information button:hover{
+button:hover {
   cursor: pointer;
 }
 
+.products {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.product {
+  border: 1px solid black;
+  width: 500px;
+  height: auto;
+  background-color: rgba(170, 170, 170, 0.2);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.product h4 {
+  margin: 20px;
+}
+
+.productDescription {
+  font-family:monospace;
+}
