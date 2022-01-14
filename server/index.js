@@ -42,6 +42,25 @@ app.get("/products", (req, res) => {
   });
 });
 
+app.put("/update", (req, res) => {
+  const id = req.body.id;
+  const name = req.body.name;
+  const description = req.body.description;
+  db.query(
+    "UPDATE products SET product_name = ? WHERE product_id = ?",
+    [name, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+//app.delete();
+
 app.listen(3001, () => {
   console.log("Server is running on port 3001!");
 });

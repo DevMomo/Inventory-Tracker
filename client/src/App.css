@@ -35,14 +35,15 @@ button:hover {
   border: 1px solid black;
   width: 500px;
   height: auto;
-  background-color: rgba(170, 170, 170, 0.2);
-  font-family: 'Courier New', Courier, monospace;
+  margin: auto;
+  background-color: rgba(170, 170, 170, 0.1);
+  font-family: "Courier New", Courier, monospace;
 }
 
-.product h4 {
-  margin: 20px;
+.product h5 {
+  margin: 10px;
 }
 
-.productDescription {
-  font-family:monospace;
+.editElements {
+  margin: 10px;
 }

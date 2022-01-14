@@ -11,6 +11,8 @@ function App() {
     console.log(name, category, description);
   };
 
+  const [newName, setNewName] = useState("");
+
   const [productsList, setProductsList] = useState([]);
 
   const addProduct = () => {
@@ -19,7 +21,6 @@ function App() {
       category: category,
       description: description,
     }).then(() => {
-      console.log(name, category, description);
       setProductsList([
         ...productsList,
         {
@@ -35,6 +36,25 @@ function App() {
     Axios.get("http://localhost:3001/products", {}).then((response) => {
       setProductsList(response.data);
     });
+  };
+
+  const updateProductName = (id) => {
+    Axios.put("http://localhost:3001/update", { name: newName, id: id }).then(
+      (response) => {
+        setProductsList(
+          productsList.map((val) => {
+            return (val.product_id == id
+              ? {
+                  product_id: val.product_id,
+                  product_name: newName,
+                  category_id: val.category_id,
+                  product_description: val.product_description,
+                }
+              : val);
+          })
+        );
+      }
+    );
   };
 
   return (
@@ -70,12 +90,37 @@ function App() {
         {productsList.map((val, key) => {
           return (
             <div className="product">
-              <h4>Name: {val.product_name}</h4>
-              <h4>Category: {val.category_id}</h4>
-              <h4>
-                Description:{" "}
-                <p className="productDescription">{val.product_description}</p>
-              </h4>
+              <div>
+                <h5>
+                  <em>Name:</em> {val.product_name}
+                </h5>
+                <h5>
+                  <em>Category:</em> {val.category_id}
+                </h5>
+                <h5>
+                  <em>Description:</em> {val.product_description}
+                </h5>
+              </div>
+              <div className="editElements">
+                <input
+                  type="text"
+                  placeholder="Enter new name"
+                  onChange={(event) => {
+                    setNewName(event.target.value);
+                  }}
+                ></input>
+                <button
+                  onClick={() => {
+                    updateProductName(val.product_id);
+                  }}
+                >
+                  Update
+                </button>
+                <input type="number" placeholder="Enter new category"></input>
+                <button>Update</button>
+                <input type="text" placeholder="Enter new description"></input>
+                <button>Update</button>
+              </div>
             </div>
           );
         })}
