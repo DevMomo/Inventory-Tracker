@@ -44,6 +44,10 @@ button:hover {
   margin: 10px;
 }
 
+.editDeleteButtons {
+  margin: 10px;
+}
+
 .editElements {
   margin: 10px;
 }

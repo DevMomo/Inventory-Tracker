@@ -42,6 +42,16 @@ app.get("/products", (req, res) => {
   });
 });
 
+app.get("/categories", (req, res) => {
+    db.query("SELECT * FROM categories", (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    });
+  });
+
 app.put("/update", (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
