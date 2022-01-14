@@ -43,22 +43,23 @@ app.get("/products", (req, res) => {
 });
 
 app.get("/categories", (req, res) => {
-    db.query("SELECT * FROM categories", (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    });
+  db.query("SELECT * FROM categories", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
   });
+});
 
 app.put("/update", (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
+  const category_id = req.body.category_id;
   const description = req.body.description;
   db.query(
-    "UPDATE products SET product_name = ? WHERE product_id = ?",
-    [name, id],
+    "UPDATE products SET product_name = COALESCE(?, product_name), category_id = COALESCE(?, category_id), product_description = COALESCE(?, product_description) WHERE product_id = ?",
+    [name, category_id, description, id],
     (err, result) => {
       if (err) {
         console.log(err);

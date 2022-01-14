@@ -11,12 +11,12 @@ function App() {
     console.log(name, category, description);
   };
 
-  const [newName, setNewName] = useState("");
+  const [newName, setNewName] = useState();
+  const [newCategory, setNewCategory] = useState();
+  const [newDescription, setNewDescription] = useState();
 
   const [productsList, setProductsList] = useState([]);
-
-  const [categoryList, setCategoryList] = useState([]);
-
+  const [categoryHash, setCategoryHash] = useState({});
   const [visibleEditFieldsList, setVisibleEditFields] = useState({});
 
   const addProduct = () => {
@@ -42,33 +42,38 @@ function App() {
     });
   };
 
-  const getCategoryList = () => {
+  const getCategoryNames = () => {
     Axios.get("http://localhost:3001/categories", {}).then((response) => {
-      setProductsList(response.data);
+      setCategoryHash(response.data);
     });
   };
 
-  const updateProductName = (id) => {
-    Axios.put("http://localhost:3001/update", { name: newName, id: id }).then(
-      (response) => {
-        setProductsList(
-          productsList.map((val) => {
-            return val.product_id == id
-              ? {
-                  product_id: val.product_id,
-                  product_name: newName,
-                  category_id: val.category_id,
-                  product_description: val.product_description,
-                }
-              : val;
-          })
-        );
-      }
-    );
+  const updateProduct = (id) => {
+    Axios.put("http://localhost:3001/update", {
+      name: newName,
+      category_id: newCategory,
+      description: newDescription,
+      id: id,
+    }).then((response) => {
+      setProductsList(
+        productsList.map((val) => {
+          return val.product_id == id
+            ? {
+                product_id: val.product_id,
+                product_name: newName ?? val.product_name,
+                category_id: newCategory ?? val.category_id,
+                product_description: newDescription ?? val.product_description,
+              }
+            : val;
+        })
+      );
+    });
   };
 
-  const toggleVisibility = id => {
-    setVisibleEditFields(prev => Boolean(!prev[id]) ? {...prev, [id]: true} : {...prev, [id]: false});
+  const toggleVisibility = (id) => {
+    setVisibleEditFields((prev) =>
+      Boolean(!prev[id]) ? { ...prev, [id]: true } : { ...prev, [id]: false }
+    );
   };
 
   return (
@@ -137,29 +142,33 @@ function App() {
                         setNewName(event.target.value);
                       }}
                     ></input>
-
-                    <button
-                      onClick={() => {
-                        updateProductName(val.product_id);
-                      }}
-                    >
-                      Update
-                    </button>
                   </div>
                   <div>
                     <input
                       type="number"
                       placeholder="Enter new category"
+                      onChange={(event) => {
+                        setNewCategory(event.target.value);
+                      }}
                     ></input>
-                    <button>Update</button>
                   </div>
                   <div>
                     <input
                       type="text"
                       placeholder="Enter new description"
+                      onChange={(event) => {
+                        setNewDescription(event.target.value);
+                      }}
                     ></input>
-                    <button>Update</button>
                   </div>
+                  <button
+                    className="updateButton"
+                    onClick={() => {
+                      updateProduct(val.product_id);
+                    }}
+                  >
+                    Update
+                  </button>
                 </div>
               )}
             </div>
