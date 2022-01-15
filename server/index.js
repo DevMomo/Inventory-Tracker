@@ -3,6 +3,9 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
+const fastcsv = require("fast-csv");
+const fs = require("fs");
+const ws = fs.createWriteStream("products.csv");
 
 app.use(cors());
 app.use(express.json());

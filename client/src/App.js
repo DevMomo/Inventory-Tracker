@@ -16,7 +16,7 @@ function App() {
   const [newDescription, setNewDescription] = useState();
 
   const [productsList, setProductsList] = useState([]);
-  const [categoryHash, setCategoryHash] = useState({});
+  const [categoryList, setcategoryList] = useState({});
   const [visibleEditFieldsList, setVisibleEditFields] = useState({});
 
   const addProduct = () => {
@@ -66,10 +66,12 @@ function App() {
 
   const deleteProduct = (id) => {
     Axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
-      setProductsList(productsList.filter((val) => {
-        return val.product_id != id
-      }))
-    })
+      setProductsList(
+        productsList.filter((val) => {
+          return val.product_id != id;
+        })
+      );
+    });
   };
 
   const toggleVisibility = (id) => {
@@ -80,12 +82,17 @@ function App() {
 
   const getCategories = () => {
     Axios.get("http://localhost:3001/categories", {}).then((response) => {
-      setCategoryHash(
-        //response.body.map((val) => ) FINISH THIS        
-      );
-      //console.log(response.data);
-      console.log(categoryHash);
+      var res = response.data.reduce((obj,e) => ({...obj, [e.category_id]:e.category_name}), {});
+      setcategoryList(res);
     });
+  };
+
+  const getCategoryName = (id) => {
+    if (categoryList.length === 0) {
+      getCategories();
+      console.log("Retrieving categories.");
+    }
+    console.log(categoryList[id]);
   };
 
   return (
@@ -95,7 +102,7 @@ function App() {
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ></link>
       <div className="information">
-        <button onClick={() => getCategories()}>Categories</button>
+        <button onClick={() => getCategoryName(1)}>Categories</button>
         <label>Name:</label>
         <input
           type="text"
@@ -141,7 +148,11 @@ function App() {
                 <button onClick={() => toggleVisibility(val.product_id)}>
                   <i class="fa fa-pencil" title="Edit"></i>
                 </button>
-                <button onClick={() => {deleteProduct(val.product_id)}}>
+                <button
+                  onClick={() => {
+                    deleteProduct(val.product_id);
+                  }}
+                >
                   <i class="fa fa-trash" title="Delete"></i>
                 </button>
               </div>
