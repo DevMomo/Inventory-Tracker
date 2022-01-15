@@ -90,9 +90,8 @@ function App() {
   const getCategoryName = (id) => {
     if (categoryList.length === 0) {
       getCategories();
-      console.log("Retrieving categories.");
     }
-    console.log(categoryList[id]);
+    return categoryList[id];
   };
 
   return (
