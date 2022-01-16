@@ -49,8 +49,9 @@ function App() {
       console.log("Downloading products.");
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
+      const filename = formattedDateTime() + " " + "products.csv";
       link.href = url;
-      link.setAttribute("download", "file.csv"); //or any other extension
+      link.setAttribute("download", filename); //or any other extension
       document.body.appendChild(link);
       link.click();
     });
@@ -88,12 +89,6 @@ function App() {
     });
   };
 
-  const toggleVisibility = (id) => {
-    setVisibleEditFields((prev) =>
-      Boolean(!prev[id]) ? { ...prev, [id]: true } : { ...prev, [id]: false }
-    );
-  };
-
   const getCategories = () => {
     console.log("Fetching categories");
     Axios.get("http://localhost:3001/categories", {}).then((response) => {
@@ -104,6 +99,23 @@ function App() {
         )
       );
     });
+  };
+
+  const toggleVisibility = (id) => {
+    setVisibleEditFields((prev) =>
+      Boolean(!prev[id]) ? { ...prev, [id]: true } : { ...prev, [id]: false }
+    );
+  };
+
+  const formattedDateTime = () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
+    var yyyy = today.getFullYear();
+    var time =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    today = dd + "-" + mm + "-" + yyyy + " " + time;
+    return today;
   };
 
   const getCategoryName = (id) => {
