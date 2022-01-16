@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import Axios from "axios";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
   const [newDescription, setNewDescription] = useState();
 
   const [productsList, setProductsList] = useState([]);
-  const [categoryList, setcategoryList] = useState({});
+  const [categoryList, setCategoryList] = useState({});
   const [visibleEditFieldsList, setVisibleEditFields] = useState({});
 
   const addProduct = () => {
@@ -81,17 +81,30 @@ function App() {
   };
 
   const getCategories = () => {
+    console.log("Fetching categories");
     Axios.get("http://localhost:3001/categories", {}).then((response) => {
-      var res = response.data.reduce((obj,e) => ({...obj, [e.category_id]:e.category_name}), {});
-      setcategoryList(res);
+      setCategoryList(
+        response.data.reduce(
+          (obj, e) => ({ ...obj, [e.category_id]: e.category_name }),
+          {}
+        )
+      );
     });
   };
 
   const getCategoryName = (id) => {
-    if (categoryList.length === 0) {
+    if (Object.keys(categoryList).length === 0) {
       getCategories();
     }
     return categoryList[id];
+  };
+
+  const getCategoryListString = () => {
+    var categoryString = ""
+    for (const [key, value] of Object.entries(categoryList)) {
+      categoryString += key + ': ' + value + '\n';
+    }
+    return categoryString;
   };
 
   return (
@@ -137,7 +150,7 @@ function App() {
                   <em>Name:</em> {val.product_name}
                 </h5>
                 <h5>
-                  <em>Category:</em> {val.category_id}
+                  <em>Category:</em> {getCategoryName(val.category_id)}
                 </h5>
                 <h5>
                   <em>Description:</em> {val.product_description}
@@ -169,6 +182,7 @@ function App() {
                   <div>
                     <input
                       type="number"
+                      title={getCategoryListString()}
                       placeholder="Enter new category"
                       onChange={(event) => {
                         setNewCategory(event.target.value);
