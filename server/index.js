@@ -8,6 +8,9 @@ const json2csv = require("json2csv").Parser;
 app.use(cors());
 app.use(express.json());
 
+/*
+ * Database settings
+ */
 const db = mysql.createConnection({
   user: "root",
   hose: "localhost",
