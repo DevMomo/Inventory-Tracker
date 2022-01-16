@@ -42,6 +42,20 @@ function App() {
     });
   };
 
+  const downloadProducts = () => {
+    Axios.get("http://localhost:3001/products/download", {
+      responseType: "blob",
+    }).then((response) => {
+      console.log("Downloading products.");
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "file.csv"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
   const updateProduct = (id) => {
     Axios.put("http://localhost:3001/update", {
       name: newName,
@@ -100,9 +114,9 @@ function App() {
   };
 
   const getCategoryListString = () => {
-    var categoryString = ""
+    var categoryString = "";
     for (const [key, value] of Object.entries(categoryList)) {
-      categoryString += key + ': ' + value + '\n';
+      categoryString += key + ": " + value + "\n";
     }
     return categoryString;
   };
@@ -114,7 +128,6 @@ function App() {
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ></link>
       <div className="information">
-        <button onClick={() => getCategoryName(1)}>Categories</button>
         <label>Name:</label>
         <input
           type="text"
@@ -141,6 +154,7 @@ function App() {
       <hr />
       <div className="products">
         <button onClick={getProducts}>Show Products</button>
+        <button onClick={downloadProducts}>Download Products</button>
 
         {productsList.map((val, key) => {
           return (
