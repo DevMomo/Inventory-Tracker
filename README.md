@@ -87,14 +87,17 @@ This part can be finnicky. I did my best to investigate all possible side effect
  ```
 
 Troubleshooting:
-* `mysql` path may not be set properly during installation:
+
+* mysql path may not be set properly during installation:
     - You can find the MySQL shell in `/usr/local/mysql/bin`
+
 * Wrong password, can't authenticate:
-    - Sometimes, the new password set during installation isn't registered and you may have trouble authenticating your SQL commands. 
-    - Set the password manuallly by running 
+    - Sometimes, the new password set during installation isn't registered and you may have trouble authenticating your SQL commands 
+    - Set the password manuallly by running: 
     ```sh
     mysql ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'HelloShopify'
     ```
+    
 * Importing database dump is failing:
     - I've found the different versions of MySQL prepare the dump file with different syntax, and that introduces some incompatibility
     - I prepared the dump file using MySQL Community 8.0.27
