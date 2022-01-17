@@ -150,6 +150,7 @@ function App() {
         <label>Category:</label>
         <input
           type="number"
+          title={getCategoryListString()}
           onChange={(event) => {
             setCategory(event.target.value);
           }}
