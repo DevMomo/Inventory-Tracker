@@ -1,5 +1,5 @@
 # Simple Inventory Tracker
- Made for Shopify Technical Challenge - Summer 2022
+ Made by Monir Imamverdi for Shopify Technical Challenge - Summer 2022
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
