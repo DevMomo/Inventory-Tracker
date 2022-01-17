@@ -62,7 +62,7 @@ app.get("/products", (req, res) => {
  * /products/download:
  *   GET:
  *     summary: Download all product entries from the products database in CSV format.
- *     description: 
+ *     description:
  *       - Retrieve all product entries from the products database
  *       - Parse DB result into JSON
  *       - Write JSON data into CSV file
@@ -88,7 +88,7 @@ app.get("/products/download", (req, res) => {
           throw err;
         } else {
           console.log("products.csv created.");
-          res.download(path); // This is what you need
+          res.download(path);
         }
       });
     }
@@ -114,7 +114,7 @@ app.get("/categories", (req, res) => {
  * /update:
  *   PUT:
  *     summary: Update a product entry in the products database.
- *     description: Update a product entry in the products database. 
+ *     description: Update a product entry in the products database.
  *       If a field is left empty, COALESCE is used to use existing data.
  */
 app.put("/update", (req, res) => {
